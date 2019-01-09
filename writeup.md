@@ -1,6 +1,6 @@
 # **Behavioral Cloning** 
 
-## Writeup Template
+## Writeup
 
 ### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
 
@@ -19,9 +19,9 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./center_2018_12_28_22_31_29_798.jpg
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
+[image2]: ./center_2018_12_28_22_31_29_798.jpg "center img"
+[image3]: ./right_2018_12_30_19_05_26_286.jpg "right img"
+[image4]: ./left_2019_01_07_22_45_39_156.jpg "left img"
 [image5]: ./examples/placeholder_small.png "Recovery Image"
 [image6]: ./examples/placeholder_small.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
@@ -139,9 +139,9 @@ To capture good driving behavior, I first recorded two laps on track one using c
 
 I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
 
+![alt text][image2]
 ![alt text][image3]
 ![alt text][image4]
-![alt text][image5]
 
 Then I repeated this process on track two in order to get more data points.
 
