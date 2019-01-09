@@ -158,27 +158,16 @@ Training data was chosen to keep the vehicle driving on the road. I drove about 
 The overall strategy for deriving a model architecture was to at first to play arround with the convolutional layers and the fully connected layer, in the end I had some simething similar to the nvidia architecture, so I adapted to the established architecture
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set at a rate of 80/20. during training I always had a very low accuracy, strangely the lower the accuracy the better the model
+To prevent the model from overfitting I added dropouts to the fully connected layer.
 
-To combat the overfitting, I modified the model so that ...
-
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track, especially in corners with rare situation. To improve the driving behavior in these cases, I recorded onyl the critical scenes again, to have more data to learn that situation.
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-
-#### 2. Final Model Architecture
-
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
 
 
 #### 3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
-
-![alt text][image2]
-
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+To capture good driving behavior, I first recorded several laps on track one trying center lane driving. Here is an example image of center lane driving, it did not always work very good, I used all three cameras for the training, but added a correction factor to the angles of the left and right camera:
 
 ![alt text][image2]
 ![alt text][image3]
@@ -186,7 +175,19 @@ I then recorded the vehicle recovering from the left side and right sides of the
 
 Then I repeated this process on track two in order to get more data points.
 
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+To augment the data set, I also flipped images and angles thinking that this would save me time driving the track the other way arround, also i had some images with a random brightness
+
+	for i in range(0,len(images)):
+		r = np.random.random()
+		if  r <= 0.6:
+		    images.append(cv2.flip(np.copy(images[i]),+1))
+		    angles.append(angles[i]*-1)
+		elif r > 0.6:
+		    #todo random brithness
+		    images.append(self.brightness_image(images[i],np.random.random()))
+		    angles.append(angles[i])
+		    
+With this i could double my data set with new and different data.
 
 ![alt text][image6]
 ![alt text][image7]
