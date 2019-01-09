@@ -175,6 +175,24 @@ To capture good driving behavior, I first recorded several laps on track one try
 
 Then I repeated this process on track two in order to get more data points.
 
+Before using the data I also cleaned the data of too many low angle images:
+ 	# clean Data of too many low angle lines    
+	for line in self.csv_file:
+	    angle = float(line[3])
+	    if abs(angle) >= 0.10:
+		cleaned_data.append(line)
+	    else:
+		low_angle_data.append(line)
+
+	# add some low angles back to the test set
+	x, splitted = train_test_split(self.csv_file, test_size=0.2)        
+	for line in splitted:
+		cleaned_data.append(line)   
+
+
+	self.csv_file = cleaned_data
+        
+
 To augment the data set, I also flipped images and angles thinking that this would save me time driving the track the other way arround, also i had some images with a random brightness
 
 	for i in range(0,len(images)):
@@ -187,16 +205,14 @@ To augment the data set, I also flipped images and angles thinking that this wou
 		    images.append(self.brightness_image(images[i],np.random.random()))
 		    angles.append(angles[i])
 		    
-With this i could double my data set with new and different data.
+With this i could double my data set with new and different data. This was all done in the generators and only to the training data not to the validation data, here I only used the center camera images. before returning the Batch, the images in the batch where shuffeled again
 
 ![alt text][image6]
 ![alt text][image7]
 
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
+After the collection process, I had 30000 number of data points.
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3 as evidenced by ... 
+I used an adam optimizer so that manually training the learning rate wasn't necessary. Even though I tried training with a set learn rate
