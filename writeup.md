@@ -176,7 +176,8 @@ To capture good driving behavior, I first recorded several laps on track one try
 Then I repeated this process on track two in order to get more data points.
 
 Before using the data I also cleaned the data of too many low angle images:
- 	# clean Data of too many low angle lines    
+ 	
+	# clean Data of too many low angle lines    
 	for line in self.csv_file:
 	    angle = float(line[3])
 	    if abs(angle) >= 0.10:
