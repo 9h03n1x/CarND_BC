@@ -234,5 +234,7 @@ I used this training data for training the model. The validation set helped dete
 I used an adam optimizer so that manually training the learning rate wasn't necessary. Even though I tried training with a set learn rate
 
 <video width="320" height="160" controls>
-  <source src="video1.mp4" type="video/mp4">
+  <source src="https://youtu.be/imiSe6uQM0U" type="video/mp4">
 </video>
+
+here is the link to the video: https://youtu.be/imiSe6uQM0U
