@@ -222,12 +222,17 @@ With this i could double my data set with new and different data. This was all d
 
 original Image:
 ![alt text][image2]
+
 flipped Image:
 ![alt text][image5]
 
 
 
-After the collection process, I had 30000 number of data points.
+After the collection process, I had 35000 number of data points.
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3 as evidenced by ... 
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3, I tried to train more epochs, this had no significant positive effect on the results
 I used an adam optimizer so that manually training the learning rate wasn't necessary. Even though I tried training with a set learn rate
+
+<video width="320" height="160" controls>
+  <source src="video1.mp4" type="video/mp4">
+</video>
