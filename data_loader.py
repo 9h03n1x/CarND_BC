@@ -132,22 +132,12 @@ class data_loader():
                             name = batch_sample[2]
                             right_image = (mpimg.imread(name))
                             right_angle = (float(batch_sample[3])-0.2)
-                            #apply correction factor on  right image
-                            #if right_angle > 0:
-                            #    right_angle = right_angle*0.75
-                            #else:
-                            #    right_angle = right_angle *3
                             images.append(right_image)
                             angles.append(right_angle)
                         if self.active_cams["left"]:
                             name = batch_sample[1]
                             left_image =(mpimg.imread(name))
                             left_angle = (float(batch_sample[3])+0.2)
-                            #apply correction factor on  left image
-                            #if left_angle < 0:
-                            #    left_angle = left_angle*0.75
-                            #else:
-                            #    left_angle = left_angle *3
                             images.append(left_image)
                             angles.append(left_angle)
                             
@@ -201,7 +191,3 @@ class data_loader():
         img = np.clip(img, 0, 255)
         return img
 
-
-    
-    
-    
