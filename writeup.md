@@ -19,10 +19,10 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./center_2018_12_28_22_31_29_798.jpg "center img"
-[image3]: ./right_2018_12_30_19_05_26_286.jpg "right img"
-[image4]: ./left_2019_01_07_22_45_39_156.jpg "left img"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
+[image2]: ./center.png "center img"
+[image3]: ./right.png "right img"
+[image4]: ./left.png "left img"
+[image5]: ./flipped.png "flipped Image"
 [image6]: ./examples/placeholder_small.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
@@ -51,7 +51,7 @@ python drive.py model1.h5
 
 The main_project.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works. 
 
-the choosen architecture is the nvidia model with dropout:
+the choosen architecture is the nvidia model with dropout and a additional fully connected layer with 500 Nodes:
 
 0.  Preprocessing the given data norm and crop                        
 1st Layer Conv2D 1x1 with max strides 1x1                           
@@ -60,11 +60,12 @@ the choosen architecture is the nvidia model with dropout:
 4th Layer Conv2D 5x5 with max strides 2x2                           
 5th Layer Conv2D 3x3 with max strides 1x1                           
 6th Layer Conv2D 3x3 with max strides 1x1                           
-7th Layer Fully Connected with relu activation dropout              
+7th Layer Fully Connected with relu activation (additional layer)              
 6th Layer Fully Connected with relu activation dropout              
 7th Layer Fully Connected with relu activation dropout              
-8th Layer Fully Connected with relu activation dropout                 
-9th Layer Output layer for steering angle prediction                
+8th Layer Fully Connected with relu activation dropout
+9th Layer Fully Connected with relu activation dropout
+10th Layer Output layer for steering angle prediction                
 
 before creatin the modell the data loader is created
 
@@ -90,7 +91,8 @@ The model architecture is the the same as the nvidia model with dropouts
 
     model = Sequential()
     #0th Layer Data Preporcessing (cropping and normalizing ,input_shape=(320,160,3)
-    model.add(Cropping2D(cropping=((60,15), (0,0)), input_shape=(160,320,3)))
+    model.add(Cropping2D(cropping=((60,20), (0,0)), input_shape=(160,320,3)))
+    #model.add(Lambda(tf.image.rgb_to_grayscale))
     model.add(Lambda(lambda x: (x / 255.0) - 0.5))
     
     model.add(Conv2D(3,kernel_size=(1, 1), strides=(1, 1)))
@@ -119,21 +121,31 @@ The model architecture is the the same as the nvidia model with dropouts
     model.add(Flatten())
     #model.add(Dropout(0.25))
     model.add(Activation('relu'))
-
-    #6th Layer Fully Connected with elu activation
+    
+    #6th Layer Fully Connected with relu activation
+    model.add(Dense(500))
+    model.add(Activation('relu'))
+    #7th Layer Fully Connected with relu activation
     model.add(Dense(100))
     model.add(Activation('relu'))
     model.add(Dropout(0.3))
-    #7th Layer Fully Connected with  elu activation
+    #8th Layer Fully Connected with  relu activation
     model.add(Dense(50))
     model.add(Activation('relu'))
     model.add(Dropout(0.3))
-    #8th Layer Fully Connected with  elu activation
+    #9th Layer Fully Connected with  relu activation
     model.add(Dense(10))
     model.add(Activation('relu'))
     model.add(Dropout(0.3))
-    #9th Layer Fully Connected 
+    #10th Layer Fully Connected 
     model.add(Dense(1))
+    
+    optimizer = Adam(lr=1e-5)
+    model.compile(loss='mean_squared_error', optimizer=optimizer,metrics=['mae','mse','accuracy'])
+    model.fit_generator(training_gen, samples_per_epoch=len(train_samples)*2, validation_data=valid_gen, 
+            nb_val_samples=len(validation_samples), nb_epoch=3)
+    
+    model.save("C://MyWorkspace//workspace//BC_CarND//model//model2.h5", overwrite =True)
 
 
 The model includes RELU layers to introduce nonlinearity and dropouts to prevent the model from overfitting, and the data is normalized in the model using a Keras lambda layer (code line 72). 
@@ -208,8 +220,10 @@ To augment the data set, I also flipped images and angles thinking that this wou
 		    
 With this i could double my data set with new and different data. This was all done in the generators and only to the training data not to the validation data, here I only used the center camera images. before returning the Batch, the images in the batch where shuffeled again
 
-![alt text][image6]
-![alt text][image7]
+original Image:
+![alt text][image2]
+flipped Image:
+![alt text][image5]
 
 
 
