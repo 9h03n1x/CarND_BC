@@ -37,12 +37,13 @@ if __name__ == '__main__':
     
     path = "C://MyWorkspace//workspace//BC_CarND//training_data"
     
+    #init the data loader
     dl = data_loader(path)
-    #x_train, y_train, x_valid, y_valid = dl.load_data(valid_size = 0.2)
+    # load the data and activate the different cameras
     dl.load_data(valid_size = 0.2,center = True, left= True, right = True )
     
     train_samples, validation_samples = dl.get_data()
-    batch_size = 16
+    batch_size = 8
     training_gen = dl.batch_loader(target = "train", batch_size= batch_size)
     valid_gen = dl.batch_loader(target = "valid", batch_size= batch_size)
     
@@ -66,8 +67,7 @@ if __name__ == '__main__':
     
     model = Sequential()
     #0th Layer Data Preporcessing (cropping and normalizing ,input_shape=(320,160,3)
-    model.add(Cropping2D(cropping=((60,15), (0,0)), input_shape=(160,320,3)))
-    #model.add(Lambda(tf.image.rgb_to_grayscale))
+    model.add(Cropping2D(cropping=((60,20), (0,0)), input_shape=(160,320,3)))
     model.add(Lambda(lambda x: (x / 255.0) - 0.5))
     
     model.add(Conv2D(3,kernel_size=(1, 1), strides=(1, 1)))
@@ -96,6 +96,10 @@ if __name__ == '__main__':
     model.add(Flatten())
     #model.add(Dropout(0.25))
     model.add(Activation('relu'))
+    
+    model.add(Dense(500))
+    model.add(Activation('relu'))
+    #model.add(Dropout(0.3))
 
     #6th Layer Fully Connected with elu activation
     model.add(Dense(100))
@@ -111,18 +115,13 @@ if __name__ == '__main__':
     model.add(Dropout(0.3))
     #9th Layer Fully Connected 
     model.add(Dense(1))
-    #model.add(Activation('relu'))
     
-    #model.compile('adam', 'mse', ['accuracy'])
-    #sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-    #adagrad = optimizers.Adagrad(lr=0.01, epsilon=None, decay=0.0)
-    #adadelta=optimizers.Adadelta()
-    optimizer = Adam(lr=1e-4)
-    model.compile(loss='mean_squared_error', optimizer=optimizer,metrics=['mae','acc'])
+    optimizer = Adam(lr=1e-5)
+    model.compile(loss='mean_squared_error', optimizer=optimizer,metrics=['mae','mse','accuracy'])
     model.fit_generator(training_gen, samples_per_epoch=len(train_samples)*2, validation_data=valid_gen, 
             nb_val_samples=len(validation_samples), nb_epoch=5)
     
-    model.save("C://MyWorkspace//workspace//BC_CarND//model//model1.h5", overwrite =True)
+    model.save("C://MyWorkspace//workspace//BC_CarND//model//model2.h5", overwrite =True)
     #######################################################################
     ################ Keras Model  #########################################
     #######################################################################
