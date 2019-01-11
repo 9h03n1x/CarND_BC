@@ -68,19 +68,19 @@ the choosen architecture is the nvidia model with dropout and a additional fully
 10th Layer Output layer for steering angle prediction                
 
 before creatin the modell the data loader is created
-
+```python
 	 #init the data loader
     dl = data_loader(path)
     # load the data and activate the different cameras
     dl.load_data(valid_size = 0.2,center = True, left= True, right = True )
-
+```
 get the data from the data loader and create the generators for the training data and the validation data
-
+```python
     train_samples, validation_samples = dl.get_data()
     batch_size = 16
     training_gen = dl.batch_loader(target = "train", batch_size= batch_size)
     valid_gen = dl.batch_loader(target = "valid", batch_size= batch_size)
-
+```
 
 ### Model Architecture and Training Strategy
 
@@ -88,7 +88,7 @@ get the data from the data loader and create the generators for the training dat
 
 My model consists of a convolution neural network with 5x5 filter sizes and 3x3 filters (main_project.py lines 68-115).
 The model architecture is the the same as the nvidia model with dropouts
-
+```python
     model = Sequential()
     #0th Layer Data Preporcessing (cropping and normalizing ,input_shape=(320,160,3)
     model.add(Cropping2D(cropping=((60,20), (0,0)), input_shape=(160,320,3)))
@@ -146,7 +146,7 @@ The model architecture is the the same as the nvidia model with dropouts
             nb_val_samples=len(validation_samples), nb_epoch=3)
     
     model.save("C://MyWorkspace//workspace//BC_CarND//model//model2.h5", overwrite =True)
-
+```
 
 The model includes RELU layers to introduce nonlinearity and dropouts to prevent the model from overfitting, and the data is normalized in the model using a Keras lambda layer (code line 72). 
 
@@ -188,7 +188,7 @@ To capture good driving behavior, I first recorded several laps on track one try
 Then I repeated this process on track two in order to get more data points.
 
 Before using the data I also cleaned the data of too many low angle images:
- 	
+```python
 	# clean Data of too many low angle lines    
 	for line in self.csv_file:
 	    angle = float(line[3])
@@ -204,10 +204,10 @@ Before using the data I also cleaned the data of too many low angle images:
 
 
 	self.csv_file = cleaned_data
-        
+```        
 
 To augment the data set, I also flipped images and angles thinking that this would save me time driving the track the other way arround, also i had some images with a random brightness
-
+```python
 	for i in range(0,len(images)):
 		r = np.random.random()
 		if  r <= 0.6:
@@ -217,7 +217,7 @@ To augment the data set, I also flipped images and angles thinking that this wou
 		    #todo random brithness
 		    images.append(self.brightness_image(images[i],np.random.random()))
 		    angles.append(angles[i])
-		    
+```		    
 With this i could double my data set with new and different data. This was all done in the generators and only to the training data not to the validation data, here I only used the center camera images. before returning the Batch, the images in the batch where shuffeled again
 
 original Image:
@@ -236,3 +236,5 @@ I used an adam optimizer so that manually training the learning rate wasn't nece
 <iframe src="https://onedrive.live.com/embed?cid=1E818782C34EFFAA&resid=1E818782C34EFFAA%215828&authkey=AP82Uo1S_cJhzOI" width="320" height="180" frameborder="0" scrolling="no" allowfullscreen></iframe>
 
 here is the link to my youtube video: https://youtu.be/imiSe6uQM0U
+
+[![First track](http://img.YouTube.com/vi/imiSe6uQM0U/0.jpg)](https://www.youtube.com/watch?v=imiSe6uQM0U)
