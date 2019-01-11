@@ -233,7 +233,10 @@ After the collection process, I had 35000 number of data points.
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3, I tried to train more epochs, this had no significant positive effect on the results
 I used an adam optimizer so that manually training the learning rate wasn't necessary. Even though I tried training with a set learn rate
 
+<dl>
 <iframe src="https://onedrive.live.com/embed?cid=1E818782C34EFFAA&resid=1E818782C34EFFAA%215828&authkey=AP82Uo1S_cJhzOI" width="320" height="180" frameborder="0" scrolling="no" allowfullscreen></iframe>
+</dl>
+
 
 here is the link to my youtube video: https://youtu.be/imiSe6uQM0U
 
